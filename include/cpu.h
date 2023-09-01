@@ -1,10 +1,25 @@
 #include "memory_mapper.h"
+#include "bios.h"
 
-const uint32_t PC_START = 0xbfc00000;
-const int REGISTER_COUNT = 32;
+#ifndef CPU_H
+#define CPU_H
 
-typedef struct CPU{
-    uint32_t PC = PC_START;
+#define REGISTER_COUNT 32
+
+typedef struct CPU {
+    uint32_t PC;
     uint32_t registers[REGISTER_COUNT];
     MemoryMapper memory_mapper;
-}
+} CPU;
+
+typedef struct Instruction {
+    uint32_t opcode;
+    uint32_t register_num;
+    uint32_t immediate_val;
+} Instruction;
+
+void initiate_cpu(CPU* cpu);
+Instruction decode_bits(uint32_t raw_instruction);
+void read_and_execute(CPU* cpu);
+
+#endif

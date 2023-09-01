@@ -1,6 +1,5 @@
-#include "stdlib.h"
 #include "stdio.h"
-#include "bios.h"
+#include "helper.h"
 
 void dump_array(uint32_t* arr, int file_size)
 {
@@ -26,12 +25,4 @@ void read_file(const char* filename, int file_size, uint8_t* destination){
         exit(1);
     }
     fclose(f);
-}
-
-
-int main(int argc, char** argv)
-{
-    bios ps1_bios;
-    read_file("scph1001.bin", BIOS_SIZE, ps1_bios.bios_memory);
-    dump_array((uint32_t*) ps1_bios.bios_memory, BIOS_SIZE);
 }
