@@ -9,6 +9,10 @@ int main(int argc, char** argv)
     initiate_bios(&bios);
     MemoryMapper memory_mapper = {.bios = bios};
     CPU cpu = {.registers = {0}, .memory_mapper = memory_mapper}; 
-    dump_array(&bios, BIOS_SIZE);
-    read_and_execute(&cpu);
+    initiate_cpu(&cpu);
+    // dump_array(&bios, BIOS_SIZE);
+    while (1)
+    {
+        read_and_execute(&cpu);
+    }
 }
