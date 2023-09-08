@@ -3,7 +3,7 @@
 const int HARDWARE_REGISTERS_START = 0x1f801000;
 const int HARDWARE_REGISTERS_END = HARDWARE_REGISTERS_START + 8*0x1000;
 
-uint8_t contains(uint32_t addr, uint32_t start, uint32_t end)
+bool contains(uint32_t addr, uint32_t start, uint32_t end)
 {
     return (addr >= start) && (addr <= end);
 }

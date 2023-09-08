@@ -5,9 +5,9 @@ TARGET := bin/ps1_emulator
 SRCEXT := c
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -Wall 
-LIB := -L lib
-INC := -I include
+CFLAGS := -Wall -Wextra -Wunused-parameter -Wno-unused-parameter
+LIB := -lsdl2 -lsdl2_ttf -Llib
+INC := -I include -I/opt/homebrew/include
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."

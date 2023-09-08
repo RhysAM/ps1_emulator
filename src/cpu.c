@@ -43,6 +43,10 @@ Instruction decode_bits(uint32_t raw_instruction)
 
 void read_and_execute(CPU* cpu)
 {
+    if (cpu->halted)
+    {
+        return;
+    }
     Instruction current_instr = cpu->next_instruction;
     uint32_t raw_instruction = load_word(&(cpu->memory_mapper), cpu->PC); 
     Instruction next_instr = decode_bits(raw_instruction); 
@@ -58,6 +62,7 @@ void initiate_cpu(CPU* cpu)
     memset(cpu->registers, 0xbabebabe, REGISTER_COUNT*sizeof((cpu->registers[0])));
     cpu->registers[0] = 0;
     cpu->next_instruction = decode_bits(0);
+    cpu->halted = false;
 }
 
 void set_register(CPU* cpu, int register_number, uint32_t val)

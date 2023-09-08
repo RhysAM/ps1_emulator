@@ -1,5 +1,6 @@
 #include "memory_mapper.h"
 #include "bios.h"
+#include <stdbool.h>
 
 #ifndef CPU_H
 #define CPU_H
@@ -18,7 +19,8 @@ typedef struct Instruction {
     uint32_t raw_instruction;
 } Instruction;
 
-typedef struct CPU {
+typedef struct CPU{
+    bool halted;
     uint32_t PC;
     uint32_t registers[REGISTER_COUNT];
     MemoryMapper memory_mapper;
