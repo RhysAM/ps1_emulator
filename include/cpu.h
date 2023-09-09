@@ -23,7 +23,7 @@ typedef struct CPU{
     bool halted;
     uint32_t PC;
     uint32_t registers[REGISTER_COUNT];
-    MemoryMapper memory_mapper;
+    MemoryMapper* memory_mapper;
     Instruction next_instruction;
 } CPU;
 

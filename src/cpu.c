@@ -48,12 +48,13 @@ void read_and_execute(CPU* cpu)
         return;
     }
     Instruction current_instr = cpu->next_instruction;
-    uint32_t raw_instruction = load_word(&(cpu->memory_mapper), cpu->PC); 
+    uint32_t raw_instruction = load_word((cpu->memory_mapper), cpu->PC); 
     Instruction next_instr = decode_bits(raw_instruction); 
     cpu->next_instruction = next_instr;
     cpu->PC += 4;
     handle_instruction(cpu, current_instr);
-    print_registers(cpu);
+    // print_registers(cpu);
+    printf("PC: %08x\n", cpu->PC);
 }
 
 void initiate_cpu(CPU* cpu)
@@ -105,7 +106,7 @@ void handle_instruction(CPU* cpu, Instruction instr)
         case SW:
             printf("sw $%i, %02x($%i)\n", instr.rt, instr.immediate_val, instr.rs);
             uint32_t addr = instr.immediate_val + (int) get_register(cpu, instr.rs);
-            store_word(&cpu->memory_mapper, addr, get_register(cpu, instr.rt));
+            store_word(cpu->memory_mapper, addr, get_register(cpu, instr.rt));
             break;
         case ADDIU:
             printf("addiu $%i, $%i, 0x%02x\n", instr.rt, instr.rs, instr.immediate_val);
@@ -117,6 +118,7 @@ void handle_instruction(CPU* cpu, Instruction instr)
             break;
         default:
             printf("Unhandled instruction: %08x. Opcode: %02x\n", instr.raw_instruction, instr.opcode);
-            exit(1);
+            cpu->PC -= 4; 
+            cpu->halted = true;
     }
 }

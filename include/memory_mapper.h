@@ -8,6 +8,9 @@
 
 typedef struct MemoryMapper{
     Bios bios;
+    bool bad_state;
+    uint32_t expansion_1_base_adddress;
+    uint32_t expansion_2_base_adddress;
 } MemoryMapper;
 
 bool contains(uint32_t addr, uint32_t start, uint32_t end);
