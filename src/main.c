@@ -7,11 +7,14 @@
 #include <SDL2/SDL_ttf.h>
 
 int main(int argc, char** argv)
-{
+{ 
     Bios bios;
+    RAM* ram = malloc(sizeof(RAM));
+    memset(ram->data, 0xdeadbeef, MAIN_RAM_SIZE);
     initiate_bios(&bios);
-    MemoryMapper memory_mapper = {.bios = bios, .bad_state = false};
-    CPU cpu = {.registers = {0}, .memory_mapper = &memory_mapper}; 
+    MemoryMapper memory_mapper = {.bios = bios, .bad_state = false, .ram = ram};
+    Coprocessor COP0 = {.registers = {0}, .halted = false};
+    CPU cpu = {.registers = {0}, .memory_mapper = &memory_mapper, .COP0 = &COP0}; 
     initiate_cpu(&cpu);
     if (argc > 1)
     {
@@ -112,7 +115,12 @@ int main(int argc, char** argv)
         {
             read_and_execute(&cpu);
             printf("Memory mapper state: %d\n", memory_mapper.bad_state);
+            printf("CPU halted: %d\n", memory_mapper.bad_state);
+            // printf("Value at bios: %08x\n", load_word((cpu.memory_mapper), 0xbfc0683c));
+            // printf("Value at bios: %08x\n", load_word((cpu.memory_mapper), 0xbfc06840));
+            // cpu.halted = true;
         }
     }
+    free(ram);
     return EXIT_SUCCESS;
 }
